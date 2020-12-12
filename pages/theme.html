@@ -31,7 +31,11 @@
     <script src="assets/js/config.navbar-vertical.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
     <link href="assets/lib/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet">
-    <link href="assets/lib/prismjs/prism-okaidia.css" rel="stylesheet">
+    <link href="assets/lib/datatables-bs4/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="assets/lib/datatables.net-responsive-bs4/responsive.bootstrap4.css" rel="stylesheet">
+    <link href="assets/lib/leaflet/leaflet.css" rel="stylesheet">
+    <link href="assets/lib/leaflet.markercluster/MarkerCluster.css" rel="stylesheet">
+    <link href="assets/lib/leaflet.markercluster/MarkerCluster.Default.css" rel="stylesheet">
     <link href="assets/css/theme.css" rel="stylesheet">
 
   </head>
@@ -60,12 +64,14 @@
           <div class="collapse navbar-collapse" id="navbarVerticalCollapse">
             <div class="navbar-vertical-content perfect-scrollbar scrollbar">
               <ul class="navbar-nav flex-column">
-                <li class="nav-item"><a class="nav-link dropdown-indicator" href="#home" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="home">
+                <li class="nav-item"><a class="nav-link dropdown-indicator" href="#home" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="home">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-chart-pie"></span></span><span class="nav-link-text">Home</span>
                     </div>
                   </a>
-                  <ul class="nav collapse" id="home" data-parent="#navbarVerticalCollapse">
-                    <li class="nav-item"><a class="nav-link" href="theme.html">Dashboard</a>
+                  <ul class="nav collapse show" id="home" data-parent="#navbarVerticalCollapse">
+                    <li class="nav-item"><a class="nav-link" href="index.html">LuxembourgJS</a>
+                    </li>
+                    <li class="nav-item active"><a class="nav-link" href="theme.html">Dashboard</a>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="home/dashboard-alt.html">Dashboard alt</a>
                     </li>
@@ -467,7 +473,7 @@
                     </li>
                   </ul>
                 </li>
-                <li class="nav-item active"><a class="nav-link" href="changelog.html">
+                <li class="nav-item"><a class="nav-link" href="changelog.html">
                     <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-code-branch"></span></span><span class="nav-link-text"> Changelog</span><span class="badge badge-pill ml-2 badge-soft-primary">v2.8.0</span>
                     </div>
                   </a></li>
@@ -708,876 +714,444 @@
             </ul>
           </nav>
           <div class="card mb-3">
-            <div class="bg-holder d-none d-lg-block bg-card" style="background-image:url(assets/img/illustrations/corner-4.png);">
-            </div>
-            <!--/.bg-holder-->
-
-            <div class="card-body">
-              <div class="row">
-                <div class="col-lg-8">
-                  <h3 class="mb-0">Changelog</h3>
+            <div class="card-body rounded-soft bg-gradient">
+              <div class="row text-white align-items-center no-gutters">
+                <div class="col">
+                  <h4 class="text-white mb-0">Today $764.39</h4>
+                  <p class="fs--1 font-weight-semi-bold">Yesterday <span class="opacity-50">$684.87</span></p>
                 </div>
+                <div class="col-auto d-none d-sm-block">
+                  <select class="custom-select custom-select-sm mb-3" id="dashboard-chart-select">
+                    <option value="all">All Payments</option>
+                    <option value="successful" selected="selected">Successful Payments</option>
+                    <option value="failed">Failed Payments</option>
+                  </select>
+                </div>
+              </div>
+              <canvas class="max-w-100 rounded" id="chart-line" width="1618" height="375" aria-label="Line chart" role="img"></canvas>
+            </div>
+          </div>
+          <div class="card bg-light mb-3">
+            <div class="card-body p-3">
+              <p class="fs--1 mb-0"><a href="#!"><span class="fas fa-exchange-alt mr-2" data-fa-transform="rotate-90"></span>A payout for <strong>$921.42 </strong>was deposited 13 days ago</a>. Your next deposit is expected on <strong>Tuesday, March 13.</strong></p>
+            </div>
+          </div>
+          <div class="card-deck">
+            <div class="card mb-3 overflow-hidden" style="min-width: 12rem">
+              <div class="bg-holder bg-card" style="background-image:url(assets/img/illustrations/corner-1.png);">
+              </div>
+              <!--/.bg-holder-->
+
+              <div class="card-body position-relative">
+                <h6>Customers<span class="badge badge-soft-warning rounded-capsule ml-2">-0.23%</span></h6>
+                <div class="display-4 fs-4 mb-2 font-weight-normal text-sans-serif text-warning">58.39k</div><a class="font-weight-semi-bold fs--1 text-nowrap" href="#!">See all<span class="fas fa-angle-right ml-1" data-fa-transform="down-1"></span></a>
+              </div>
+            </div>
+            <div class="card mb-3 overflow-hidden" style="min-width: 12rem">
+              <div class="bg-holder bg-card" style="background-image:url(assets/img/illustrations/corner-2.png);">
+              </div>
+              <!--/.bg-holder-->
+
+              <div class="card-body position-relative">
+                <h6>Orders<span class="badge badge-soft-info rounded-capsule ml-2">0.0%</span></h6>
+                <div class="display-4 fs-4 mb-2 font-weight-normal text-sans-serif text-info">73.46k</div><a class="font-weight-semi-bold fs--1 text-nowrap" href="#!">All orders<span class="fas fa-angle-right ml-1" data-fa-transform="down-1"></span></a>
+              </div>
+            </div>
+            <div class="card mb-3 overflow-hidden" style="min-width: 12rem">
+              <div class="bg-holder bg-card" style="background-image:url(assets/img/illustrations/corner-3.png);">
+              </div>
+              <!--/.bg-holder-->
+
+              <div class="card-body position-relative">
+                <h6>Revenue<span class="badge badge-soft-success rounded-capsule ml-2">9.54%</span></h6>
+                <div class="display-4 fs-4 mb-2 font-weight-normal text-sans-serif" data-countup='{"count":43594,"format":"comma","prefix":"$"}'>0</div><a class="font-weight-semi-bold fs--1 text-nowrap" href="#!">Statistics<span class="fas fa-angle-right ml-1" data-fa-transform="down-1"></span></a>
               </div>
             </div>
           </div>
           <div class="card mb-3">
-            <div class="card-body">
-              <div class="alert alert-warning p-4 mb-0" role="alert">
-                <div class="media"><span class="fab fa-intentionally-kept fs-3"></span>
-                  <div class="media-body ml-3">
-                    <h4 class="alert-heading">Before you update!</h4>
-                    <p class="mb-0">Backup your files and read the changelog before updating Falcon on your project. If you come across with any problems with Falcon template during the update, feel free to contact us at <a href="mailto:info@themewagon.com">info@themewagon.com</a>.</p>
+            <div class="card-header">
+              <div class="row align-items-center justify-content-between">
+                <div class="col-6 col-sm-auto d-flex align-items-center pr-0">
+                  <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Recent Purchases</h5>
+                </div>
+                <div class="col-6 col-sm-auto ml-auto text-right pl-0">
+                  <div class="d-none" id="purchases-actions">
+                    <div class="input-group input-group-sm">
+                      <select class="custom-select cus" aria-label="Bulk actions">
+                        <option selected="">Bulk actions</option>
+                        <option value="Refund">Refund</option>
+                        <option value="Delete">Delete</option>
+                        <option value="Archive">Archive</option>
+                      </select>
+                      <button class="btn btn-falcon-default btn-sm ml-2" type="button">Apply</button>
+                    </div>
+                  </div>
+                  <div id="dashboard-actions">
+                    <button class="btn btn-falcon-default btn-sm" type="button"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ml-1">New</span></button>
+                    <button class="btn btn-falcon-default btn-sm mx-2" type="button"><span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ml-1">Filter</span></button>
+                    <button class="btn btn-falcon-default btn-sm" type="button"><span class="fas fa-external-link-alt" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ml-1">Export</span></button>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-body">
-              <div class="alert alert-info bg-white p-4 mb-0" role="alert">
-                <div class="media"><span class="fas fa-tools fs-3"></span>
-                  <div class="media-body ml-3">
-                    <h4 class="alert-heading mb-3">Migration</h4>
-                    <h5 class="mb-2">If you are customizing your project directly from <code>pages </code>directory, then follow the steps below:</h5>
-                    <p class="mb-1">Bring all the files from the following directories of latest Falcon and replace them to the corresponding directories to your project</p>
-                    <ul class="pl-0 bullet-inside mb-1">
-                      <li> <code>pages/assets/css</code></li>
-                      <li><code>pages/assets/img </code></li>
-                      <li> <code>pages/assets/js </code></li>
-                      <li> <code>pages/assets/lib </code></li>
-                      <li> <code>pages/assets/video </code></li>
-                    </ul>
-                    <p>Link your <code>CSS </code>and <code>JS </code>files from your HTML if it is required</p>
-                    <h5>If you are using <code>gulp </code>based workflow, then follow the steps below: </h5>
-                    <ul class="pl-0 bullet-inside mb-0">
-                      <li>Update <code>scss </code>directory </li>
-                      <li>Update <code>js/theme </code>directory </li>
-                      <li>Update <code>gulpfile.js </code>file </li>
-                      <li>Update <code>package.json </code>file</li>
-                      <li>Link your <code>CSS </code>and <code>JS </code>files from your HTML if it is required</li>
-                      <li>Then run the following command from your project directory.</li>
-                    </ul>
-                    <pre class="mt-2"><code class="language-html">npm i &amp;&amp; gulp</code></pre>
-                  </div>
-                </div>
+            <div class="card-body px-0 pt-0">
+              <div class="dashboard-data-table">
+                <table class="table table-sm table-dashboard fs--1 data-table border-bottom" data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":8,"columnDefs":[{"targets":[0,6],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>
+                  <thead class="bg-200 text-900">
+                    <tr>
+                      <th class="no-sort pr-1 align-middle data-table-row-bulk-select">
+                        <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input checkbox-bulk-select" id="checkbox-bulk-purchases-select" type="checkbox" data-checkbox-body="#purchases" data-checkbox-actions="#purchases-actions" data-checkbox-replaced-element="#dashboard-actions" />
+                          <label class="custom-control-label" for="checkbox-bulk-purchases-select"></label>
+                        </div>
+                      </th>
+                      <th class="sort pr-1 align-middle">Customer</th>
+                      <th class="sort pr-1 align-middle">Email</th>
+                      <th class="sort pr-1 align-middle">Product</th>
+                      <th class="sort pr-1 align-middle text-center">Payment</th>
+                      <th class="sort pr-1 align-middle text-right">Amount</th>
+                      <th class="no-sort pr-1 align-middle data-table-row-action"></th>
+                    </tr>
+                  </thead>
+                  <tbody id="purchases">
+                    <tr class="btn-reveal-trigger">
+                      <td class="align-middle">
+                        <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input checkbox-bulk-select-target" type="checkbox" id="checkbox-0" />
+                          <label class="custom-control-label" for="checkbox-0"></label>
+                        </div>
+                      </td>
+                      <th class="align-middle"><a href="pages/customer-details.html">Sylvia Plath</a></th>
+                      <td class="align-middle">john@gmail.com</td>
+                      <td class="align-middle">Slick - Drag &amp; Drop Bootstrap Generator</td>
+                      <td class="align-middle text-center fs-0"><span class="badge badge rounded-capsule badge-soft-success">Success<span class="ml-1 fas fa-check" data-fa-transform="shrink-2"></span></span>
+                      </td>
+                      <td class="align-middle text-right">$99</td>
+                      <td class="align-middle white-space-nowrap">
+                        <div class="dropdown text-sans-serif">
+                          <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal mr-3" type="button" id="dropdown0" data-toggle="dropdown" data-boundary="html" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                          <div class="dropdown-menu dropdown-menu-right border py-0" aria-labelledby="dropdown0">
+                            <div class="bg-white py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Refund</a>
+                              <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">Archive</a><a class="dropdown-item text-danger" href="#!">Delete</a>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="btn-reveal-trigger">
+                      <td class="align-middle">
+                        <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input checkbox-bulk-select-target" type="checkbox" id="checkbox-1" />
+                          <label class="custom-control-label" for="checkbox-1"></label>
+                        </div>
+                      </td>
+                      <th class="align-middle"><a href="pages/customer-details.html">Homer</a></th>
+                      <td class="align-middle">sylvia@mail.ru</td>
+                      <td class="align-middle">Bose SoundSport Wireless Headphones</td>
+                      <td class="align-middle text-center fs-0"><span class="badge badge rounded-capsule badge-soft-success">Success<span class="ml-1 fas fa-check" data-fa-transform="shrink-2"></span></span>
+                      </td>
+                      <td class="align-middle text-right">$634</td>
+                      <td class="align-middle white-space-nowrap">
+                        <div class="dropdown text-sans-serif">
+                          <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal mr-3" type="button" id="dropdown1" data-toggle="dropdown" data-boundary="html" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                          <div class="dropdown-menu dropdown-menu-right border py-0" aria-labelledby="dropdown1">
+                            <div class="bg-white py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Refund</a>
+                              <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">Archive</a><a class="dropdown-item text-danger" href="#!">Delete</a>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="btn-reveal-trigger">
+                      <td class="align-middle">
+                        <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input checkbox-bulk-select-target" type="checkbox" id="checkbox-2" />
+                          <label class="custom-control-label" for="checkbox-2"></label>
+                        </div>
+                      </td>
+                      <th class="align-middle"><a href="pages/customer-details.html">Edgar Allan Poe</a></th>
+                      <td class="align-middle">edgar@yahoo.com</td>
+                      <td class="align-middle">All-New Fire HD 8 Kids Edition Tablet</td>
+                      <td class="align-middle text-center fs-0"><span class="badge badge rounded-capsule badge-soft-secondary">Blocked<span class="ml-1 fas fa-ban" data-fa-transform="shrink-2"></span></span>
+                      </td>
+                      <td class="align-middle text-right">$199</td>
+                      <td class="align-middle white-space-nowrap">
+                        <div class="dropdown text-sans-serif">
+                          <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal mr-3" type="button" id="dropdown2" data-toggle="dropdown" data-boundary="html" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                          <div class="dropdown-menu dropdown-menu-right border py-0" aria-labelledby="dropdown2">
+                            <div class="bg-white py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Refund</a>
+                              <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">Archive</a><a class="dropdown-item text-danger" href="#!">Delete</a>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="btn-reveal-trigger">
+                      <td class="align-middle">
+                        <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input checkbox-bulk-select-target" type="checkbox" id="checkbox-3" />
+                          <label class="custom-control-label" for="checkbox-3"></label>
+                        </div>
+                      </td>
+                      <th class="align-middle"><a href="pages/customer-details.html">William Butler Yeats</a></th>
+                      <td class="align-middle">william@gmail.com</td>
+                      <td class="align-middle">Apple iPhone XR (64GB)</td>
+                      <td class="align-middle text-center fs-0"><span class="badge badge rounded-capsule badge-soft-success">Success<span class="ml-1 fas fa-check" data-fa-transform="shrink-2"></span></span>
+                      </td>
+                      <td class="align-middle text-right">$798</td>
+                      <td class="align-middle white-space-nowrap">
+                        <div class="dropdown text-sans-serif">
+                          <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal mr-3" type="button" id="dropdown3" data-toggle="dropdown" data-boundary="html" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                          <div class="dropdown-menu dropdown-menu-right border py-0" aria-labelledby="dropdown3">
+                            <div class="bg-white py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Refund</a>
+                              <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">Archive</a><a class="dropdown-item text-danger" href="#!">Delete</a>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="btn-reveal-trigger">
+                      <td class="align-middle">
+                        <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input checkbox-bulk-select-target" type="checkbox" id="checkbox-4" />
+                          <label class="custom-control-label" for="checkbox-4"></label>
+                        </div>
+                      </td>
+                      <th class="align-middle"><a href="pages/customer-details.html">Rabindranath Tagore</a></th>
+                      <td class="align-middle">tagore@twitter.com</td>
+                      <td class="align-middle">ASUS Chromebook C202SA-YS02 11.6&quot;</td>
+                      <td class="align-middle text-center fs-0"><span class="badge badge rounded-capsule badge-soft-secondary">Blocked<span class="ml-1 fas fa-ban" data-fa-transform="shrink-2"></span></span>
+                      </td>
+                      <td class="align-middle text-right">$318</td>
+                      <td class="align-middle white-space-nowrap">
+                        <div class="dropdown text-sans-serif">
+                          <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal mr-3" type="button" id="dropdown4" data-toggle="dropdown" data-boundary="html" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                          <div class="dropdown-menu dropdown-menu-right border py-0" aria-labelledby="dropdown4">
+                            <div class="bg-white py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Refund</a>
+                              <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">Archive</a><a class="dropdown-item text-danger" href="#!">Delete</a>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="btn-reveal-trigger">
+                      <td class="align-middle">
+                        <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input checkbox-bulk-select-target" type="checkbox" id="checkbox-5" />
+                          <label class="custom-control-label" for="checkbox-5"></label>
+                        </div>
+                      </td>
+                      <th class="align-middle"><a href="pages/customer-details.html">Emily Dickinson</a></th>
+                      <td class="align-middle">emily@gmail.com</td>
+                      <td class="align-middle">Mirari OK to Wake! Alarm Clock &amp; Night-Light</td>
+                      <td class="align-middle text-center fs-0"><span class="badge badge rounded-capsule badge-soft-warning">Pending<span class="ml-1 fas fa-stream" data-fa-transform="shrink-2"></span></span>
+                      </td>
+                      <td class="align-middle text-right">$11</td>
+                      <td class="align-middle white-space-nowrap">
+                        <div class="dropdown text-sans-serif">
+                          <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal mr-3" type="button" id="dropdown5" data-toggle="dropdown" data-boundary="html" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                          <div class="dropdown-menu dropdown-menu-right border py-0" aria-labelledby="dropdown5">
+                            <div class="bg-white py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Refund</a>
+                              <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">Archive</a><a class="dropdown-item text-danger" href="#!">Delete</a>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="btn-reveal-trigger">
+                      <td class="align-middle">
+                        <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input checkbox-bulk-select-target" type="checkbox" id="checkbox-6" />
+                          <label class="custom-control-label" for="checkbox-6"></label>
+                        </div>
+                      </td>
+                      <th class="align-middle"><a href="pages/customer-details.html">Giovanni Boccaccio</a></th>
+                      <td class="align-middle">giovanni@outlook.com</td>
+                      <td class="align-middle">Summer Infant Contoured Changing Pad</td>
+                      <td class="align-middle text-center fs-0"><span class="badge badge rounded-capsule badge-soft-success">Success<span class="ml-1 fas fa-check" data-fa-transform="shrink-2"></span></span>
+                      </td>
+                      <td class="align-middle text-right">$31</td>
+                      <td class="align-middle white-space-nowrap">
+                        <div class="dropdown text-sans-serif">
+                          <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal mr-3" type="button" id="dropdown6" data-toggle="dropdown" data-boundary="html" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                          <div class="dropdown-menu dropdown-menu-right border py-0" aria-labelledby="dropdown6">
+                            <div class="bg-white py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Refund</a>
+                              <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">Archive</a><a class="dropdown-item text-danger" href="#!">Delete</a>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="btn-reveal-trigger">
+                      <td class="align-middle">
+                        <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input checkbox-bulk-select-target" type="checkbox" id="checkbox-7" />
+                          <label class="custom-control-label" for="checkbox-7"></label>
+                        </div>
+                      </td>
+                      <th class="align-middle"><a href="pages/customer-details.html">Oscar Wilde</a></th>
+                      <td class="align-middle">oscar@hotmail.com</td>
+                      <td class="align-middle">Munchkin 6 Piece Fork and Spoon Set</td>
+                      <td class="align-middle text-center fs-0"><span class="badge badge rounded-capsule badge-soft-success">Success<span class="ml-1 fas fa-check" data-fa-transform="shrink-2"></span></span>
+                      </td>
+                      <td class="align-middle text-right">$43</td>
+                      <td class="align-middle white-space-nowrap">
+                        <div class="dropdown text-sans-serif">
+                          <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal mr-3" type="button" id="dropdown7" data-toggle="dropdown" data-boundary="html" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                          <div class="dropdown-menu dropdown-menu-right border py-0" aria-labelledby="dropdown7">
+                            <div class="bg-white py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Refund</a>
+                              <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">Archive</a><a class="dropdown-item text-danger" href="#!">Delete</a>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="btn-reveal-trigger">
+                      <td class="align-middle">
+                        <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input checkbox-bulk-select-target" type="checkbox" id="checkbox-8" />
+                          <label class="custom-control-label" for="checkbox-8"></label>
+                        </div>
+                      </td>
+                      <th class="align-middle"><a href="pages/customer-details.html">John Doe</a></th>
+                      <td class="align-middle">doe@gmail.com</td>
+                      <td class="align-middle">Falcon - Responsive Dashboard Template</td>
+                      <td class="align-middle text-center fs-0"><span class="badge badge rounded-capsule badge-soft-success">Success<span class="ml-1 fas fa-check" data-fa-transform="shrink-2"></span></span>
+                      </td>
+                      <td class="align-middle text-right">$57</td>
+                      <td class="align-middle white-space-nowrap">
+                        <div class="dropdown text-sans-serif">
+                          <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal mr-3" type="button" id="dropdown8" data-toggle="dropdown" data-boundary="html" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                          <div class="dropdown-menu dropdown-menu-right border py-0" aria-labelledby="dropdown8">
+                            <div class="bg-white py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Refund</a>
+                              <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">Archive</a><a class="dropdown-item text-danger" href="#!">Delete</a>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="btn-reveal-trigger">
+                      <td class="align-middle">
+                        <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input checkbox-bulk-select-target" type="checkbox" id="checkbox-9" />
+                          <label class="custom-control-label" for="checkbox-9"></label>
+                        </div>
+                      </td>
+                      <th class="align-middle"><a href="pages/customer-details.html">Emma Watson</a></th>
+                      <td class="align-middle">emma@gmail.com</td>
+                      <td class="align-middle">Apple iPhone XR (64GB)</td>
+                      <td class="align-middle text-center fs-0"><span class="badge badge rounded-capsule badge-soft-secondary">Blocked<span class="ml-1 fas fa-ban" data-fa-transform="shrink-2"></span></span>
+                      </td>
+                      <td class="align-middle text-right">$999</td>
+                      <td class="align-middle white-space-nowrap">
+                        <div class="dropdown text-sans-serif">
+                          <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal mr-3" type="button" id="dropdown9" data-toggle="dropdown" data-boundary="html" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                          <div class="dropdown-menu dropdown-menu-right border py-0" aria-labelledby="dropdown9">
+                            <div class="bg-white py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Refund</a>
+                              <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">Archive</a><a class="dropdown-item text-danger" href="#!">Delete</a>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="btn-reveal-trigger">
+                      <td class="align-middle">
+                        <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input checkbox-bulk-select-target" type="checkbox" id="checkbox-10" />
+                          <label class="custom-control-label" for="checkbox-10"></label>
+                        </div>
+                      </td>
+                      <th class="align-middle"><a href="pages/customer-details.html">Sylvia Plath</a></th>
+                      <td class="align-middle">plath@yahoo.com</td>
+                      <td class="align-middle">All-New Fire HD 8 Kids Edition Tablet</td>
+                      <td class="align-middle text-center fs-0"><span class="badge badge rounded-capsule badge-soft-warning">Pending<span class="ml-1 fas fa-stream" data-fa-transform="shrink-2"></span></span>
+                      </td>
+                      <td class="align-middle text-right">$199</td>
+                      <td class="align-middle white-space-nowrap">
+                        <div class="dropdown text-sans-serif">
+                          <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal mr-3" type="button" id="dropdown10" data-toggle="dropdown" data-boundary="html" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                          <div class="dropdown-menu dropdown-menu-right border py-0" aria-labelledby="dropdown10">
+                            <div class="bg-white py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Refund</a>
+                              <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">Archive</a><a class="dropdown-item text-danger" href="#!">Delete</a>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-2">2.8.0 - Red-necked</h5>
-              <p class="mb-0">02 November, 2020</p>
+          <div class="row no-gutters">
+            <div class="col-lg-4 pr-lg-2">
+              <div class="card h-100 bg-gradient">
+                <div class="card-header bg-transparent">
+                  <h5 class="text-white">Active users right now</h5>
+                  <div class="real-time-user display-1 font-weight-normal text-white" data-countup='{"count":119}'>0</div>
+                </div>
+                <div class="card-body text-white fs--1">
+                  <p class="border-bottom pb-2" style="border-color: rgba(255, 255, 255, 0.15) !important">Page views per second</p>
+                  <canvas class="max-w-100" id="real-time-user" width="10" height="4"></canvas>
+                  <div class="list-group-flush mt-4">
+                    <div class="list-group-item bg-transparent d-flex justify-content-between px-0 py-1 font-weight-semi-bold border-top-0" style="border-color: rgba(255, 255, 255, 0.15)">
+                      <p class="mb-0">Top Active Pages</p>
+                      <p class="mb-0">Active Users</p>
+                    </div>
+                    <div class="list-group-item bg-transparent d-flex justify-content-between px-0 py-1" style="border-color: rgba(255, 255, 255, 0.05)">
+                      <p class="mb-0">/bootstrap-themes/</p>
+                      <p class="mb-0">3</p>
+                    </div>
+                    <div class="list-group-item bg-transparent d-flex justify-content-between px-0 py-1" style="border-color: rgba(255, 255, 255, 0.05)">
+                      <p class="mb-0">/tags/html5/</p>
+                      <p class="mb-0">3</p>
+                    </div>
+                    <div class="list-group-item bg-transparent d-xxl-flex justify-content-between px-0 py-1 d-none" style="border-color: rgba(255, 255, 255, 0.05)">
+                      <p class="mb-0">/</p>
+                      <p class="mb-0">2</p>
+                    </div>
+                    <div class="list-group-item bg-transparent d-xxl-flex justify-content-between px-0 py-1 d-none" style="border-color: rgba(255, 255, 255, 0.05)">
+                      <p class="mb-0">/preview/falcon/dashboard/</p>
+                      <p class="mb-0">2</p>
+                    </div>
+                    <div class="list-group-item bg-transparent d-flex justify-content-between px-0 py-1" style="border-color: rgba(255, 255, 255, 0.05)">
+                      <p class="mb-0">/100-best-themes...all-time/</p>
+                      <p class="mb-0">1</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer text-right bg-transparent border-top" style="border-color: rgba(255, 255, 255, 0.15) !important"><a class="text-white" href="#!">Real-time report<span class="fa fa-chevron-right ml-1 fs--1"></span></a></div>
+              </div>
             </div>
-            <div class="card-body bg-light">
-              <h6>New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Search autocomplete dropdown</li>
-                <li>JS: <code>search.js </code></li>
-              </ul>
-              <h6>Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Bootstrap to <code>v4.5.3</code></li>
-                <li>SCSS: <code>_search-box.scss</code></li>
-                <li>SCSS: <code>_hover.scss</code></li>
-                <li>SCSS: <code>_icons.scss</code></li>
-                <li>SCSS: <code>_navbar.scss</code></li>
-                <li>SCSS: Move all variables from <code>_navbar-vertical.scss </code>to <code>_variables.scss</code></li>
-                <li>SCSS: Move <code>_full-calendar.scss </code>to plugins directory</li>
-                <li>SCSS: Rename <code>_fullcalendar.scss </code>to <code>_full-calendar.scss</code></li>
-                <li>SCSS: <code>_full-calendar.scss</code></li>
-                <li>JS: <code>flatpickr.js</code></li>
-                <li>JS: <code>chat.js</code></li>
-                <li>JS: <code>calendar/index.js</code></li>
-                <li>JS: <code>dropdown-on-hover.js</code></li>
-                <li>JS: Rename <code>increment.js </code>to <code>quantity.js</code></li>
-                <li>Update date picker input field placeholder.</li>
-              </ul>
-              <h6>Fix</h6>
-              <ul class="pl-0 bullet-inside">
-                <li> <strong>Today </strong>button in <code>calendar.html </code></li>
-                <li>JS files Utils import issue.</li>
-                <li>Checkout page HTML</li>
-                <li>Remove <code>tui-calendar.js</code></li>
-                <li>Add polyfil link to support Dropzone in Internet Explorer </li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-2">2.7.3 - Eurasian hobby</h5>
-              <p class="mb-0">30 August, 2020</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Page: <code>calendar.html</code></li>
-                <li>Plugin: <code>FullCalendar </code>JavaScript plugin</li>
-                <li>Plugin: <code>day.js </code>JavaScript plugin</li>
-                <li>JS: <code>fullcalendar.js</code></li>
-                <li>JS: <code>calendar/index.js</code></li>
-                <li>JS: <code>calendar/events.js</code></li>
-                <li>JS: <code>calendar/template.js</code></li>
-                <li> <code>figmafile.md</code></li>
-              </ul>
-              <h6>Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>JS: <code>navbar.js</code></li>
-                <li>JS: <code>owl-carousel.js</code></li>
-                <li>SCSS: <code>_flatpicker.scss</code></li>
-                <li> <code>inbox.html</code></li>
-              </ul>
-              <h6>Fix</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Remove cookie notice html from all pages</li>
-                <li>Inbox filter dropdown on RTL layout</li>
-                <li>Perfect scrollbar docs</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-2">2.7.2 - Banded kestrel</h5>
-              <p class="mb-0">24 August, 2020</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Plugin: <code>select2-bootstrap4-theme </code>plugin for stying Select2 plugin</li>
-                <li>JS: <code>js/theme/animated-progressbar.js</code></li>
-              </ul>
-              <h6>Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>SCSS: <code>_select2.scss </code></li>
-                <li>Pages: <code>landing.html </code></li>
-                <li>JS: <code>js/theme/tinymce.js</code></li>
-              </ul>
-              <h6>Fix</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Update scrollbar color of Navbar Standard in landing.html</li>
-                <li>Select2 input fields height issue</li>
-                <li>Navbar dropdown footer border top issue</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-2">2.7.1 - Dickinson's kestrel</h5>
-              <p class="mb-0">24 July, 2020</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>Fix</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Text break issue of total order card in Dashboard Alt</li>
-                <li>Remove unused <code>data-countupp </code>attribute from customers and orders cards in dashboard</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-2">2.7.0 - Fox Kestrel</h5>
-              <p class="mb-0">15 July, 2020</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Navbar combo layout</li>
-                <li>JS: <code>navbar-combo.js</code></li>
-              </ul>
-              <h6>Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Update navbar vertical structure</li>
-                <li>SCSS: <code>_navbar-vertical.scss</code></li>
-                <li>SCSS: <code>_variables.scss</code></li>
-                <li>SCSS: <code>_navbar.scss</code></li>
-                <li>JS: <code>navbar.js</code></li>
-                <li>JS: <code>utils.js</code></li>
-              </ul>
-              <h6>Fix</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Long text cut off issue in navbar vertical link</li>
-                <li>Improve navbar vertical documentation</li>
-                <li>Dropdown issue in responsive of kanban page</li>
-                <li>Remove <code>docs </code>directory from <code>pages/assets</code></li>
-              </ul>
-              <h5 class="mb-2">Migration for Navbar Vertical <code>v2.6.1 </code>to <code>v2.7.0</code></h5>
-              <h6>Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>SCSS: <code>_navbar-vertical.scss</code></li>
-                <li>SCSS: <code>_navbar.scss</code></li>
-                <li>JS: <code>navbar.js</code></li>
-                <li>JS: <code>utils.js </code></li>
-              </ul>
-              <h6>HTML: </h6>
-              <p>If you want to migrate to <code>v2.7.0 </code>you must follow the steps below. </p>
-              <ol>
-                <li>Wrap all of your <code>.navbar-collapse </code>content with <code>.navbar-vertical-content </code></li>
-                <li>Remove <code>.scrollbar </code>and <code>.perfect-scrollbar </code>from <code>.navbar-collapse </code>and add those classes to the <code>.navbar-vertical-content </code>element as follows.</li>
-              </ol>
-              <pre class="mt-2"><code class="language-html">&lt;nav class=&quot;navbar navbar-vertical navbar-expand-xl navbar-light&quot;&gt;
-
-  &lt;!-- Content--&gt;
-  &lt;div class=&quot;collapse navbar-collapse&quot;&gt;
-    &lt;div class=&quot;navbar-vertical-content scrollbar perfect-scrollbar&quot;&gt;
-
-      &lt;!-- Collapsible content--&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-&lt;/nav&gt;</code></pre>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-2">2.6.1 - Spotted Kestrel</h5>
-              <p class="mb-0">25 Jun, 2020</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>HTML: <code>kanban.html</code></li>
-                <li>SCSS: <code>_kanban.scss</code></li>
-                <li>JS: <code>detector.js</code></li>
-              </ul>
-              <h6>Fix</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Column height issue in Kanban page in iPad</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-2">2.6.0 - Greater Kestrels</h5>
-              <p class="mb-0">22 Jun, 2020</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Navber Inverted in Navbar Vertical</li>
-                <li>Navbar Vibrant in Navbar Vertical</li>
-                <li>Navbar Card in Navbar Vertical</li>
-                <li>JS: <code>file-input.js</code></li>
-                <li> <code>.npmrc</code></li>
-              </ul>
-              <h6>Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>chart.js <code>v2.9.2 </code>to <code>v2.9.3 </code></li>
-                <li>leaflet.js <code>v1.6.0 </code>to <code>v1.3.4 </code>for peer dependency warning</li>
-                <li>datatables.net-bs4 <code>v1.10.20 </code>to <code>v1.10.21 </code></li>
-                <li>datatables.net-responsive <code>v2.2.3 </code>to <code>v2.2.5 </code></li>
-                <li>datatables.net-responsive-bs4 <code>v2.2.3 </code>to <code>v2.2.5 </code></li>
-                <li>dropzone <code>v5.5.1 </code>to <code>v5.7.0 </code></li>
-                <li>emojionearea <code>v3.4.1 </code>to <code>v3.4.2 </code></li>
-                <li>jquery-validation <code>v1.19.1 </code>to <code>v1.19.2 </code></li>
-                <li>jquery.mb.ytplayer <code>v3.2.10 </code>to <code>v3.3.1</code></li>
-                <li>lottie-web <code>v5.5.10 </code>to <code>v5.6.10</code></li>
-                <li>perfect-scrollbar <code>v1.4.0 </code>to <code>v1.5.0</code></li>
-                <li>plyr <code>v3.5.6 </code>to <code>v3.6.2</code></li>
-                <li>popper.js <code>v1.16.0 </code>to <code>v1.16.1</code></li>
-                <li>prismjs <code>v1.17.1 </code>to <code>v1.20.0</code></li>
-                <li>select2 <code>v4.0.11 </code>to <code>v4.0.13</code></li>
-                <li>stickyfilljs <code>v2.0.3 </code>to <code>v2.1.0</code></li>
-                <li>tinymce <code>v5.1.1 </code>to <code>v5.3.1</code></li>
-                <li>Update all Dep Dependencies</li>
-                <li>Video playr in <code>feed.html</code></li>
-                <li>SCSS: Convert <code>px </code>to <code>rem </code></li>
-                <li>Replace presets <code>env </code>with <code>@babel/preset-env </code>in <code>gulpfile.js</code></li>
-                <li>JS: <code>navbar.js</code></li>
-                <li>JS: <code>tooltip.js</code></li>
-                <li>JS: <code>draggable.js</code></li>
-                <li>JS: <code>stickykit.js</code></li>
-                <li>SCSS: <code>theme/_variables.scss</code></li>
-                <li>SCSS: <code>dark/_variables.scss</code></li>
-                <li>SCSS: <code>_navbar-vertical.scss</code></li>
-                <li>SCSS: <code>_navbar-vertical.scss</code></li>
-                <li>SCSS: <code>_override.scss</code></li>
-                <li>SCSS: <code>_buttons.scss</code></li>
-                <li>SCSS: <code>_dropdowns.scss</code></li>
-              </ul>
-              <h6>Fix</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Show file name on Custom file input </li>
-                <li>Hide Navbar top shadow on Navbar vertical scroll</li>
-                <li>Depricated warning</li>
-                <li>Hide npm warning</li>
-                <li>Form validation in Wizard when any step has no form</li>
-                <li>Tooltip issue</li>
-                <li>Navbar Top width on window resize</li>
-                <li>Kanban page container scroll while dragging </li>
-                <li>Navbar top shaking while resizing in Safari</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-2">2.5.0 - Laughing</h5>
-              <p class="mb-0">21 May, 2020</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Cookie Notice</li>
-                <li>Page: <code>kanban.html</code></li>
-                <li> <code>draggable.js </code>JavaScript Plugin</li>
-                <li>Component: <code>cookie-notice.html</code></li>
-                <li>JS: <code>notice.js</code></li>
-                <li>JS: <code>kanban.js</code></li>
-                <li>JS: <code>draggable.js</code></li>
-                <li>SCSS: <code>_notice.scss</code></li>
-                <li>SCSS: <code>_kanban.scss</code></li>
-                <li>SCSS: <code>dark/_user.scss</code></li>
-                <li>SCSS: <code>dark/_user-variables.scss</code></li>
-              </ul>
-              <h6>Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Bootstrap <code>v4.4.1 </code>to <code>v4.5.0 </code></li>
-                <li>jQuery <code>v3.4.1 </code>to <code>v3.5.1</code></li>
-                <li>progressbar.js <code>v1.0.1 </code>to <code>v1.1.0</code></li>
-                <li>FontAwesome <code>v5.11.2 </code>to <code>v5.13.0</code></li>
-                <li>SCSS: <code>dark/_override.scss</code></li>
-                <li>SCSS: <code>theme/utilities/_borders.scss</code></li>
-                <li>SCSS: <code>theme/utilities/_hover.scss</code></li>
-                <li>SCSS:<code>theme/_dropdown.scss</code></li>
-                <li>SCSS: <code>theme/_browser-support.scss</code></li>
-                <li>SCSS: <code>theme/_dropdown.scss</code></li>
-                <li>SCSS: <code>theme/_mixed.scss</code></li>
-                <li>SCSS: <code>theme/_text.scss</code></li>
-                <li>SCSS: <code>theme/_modal.scss</code></li>
-                <li>SCSS: <code>theme/_functions.scss</code></li>
-                <li>JS: <code>Utils.js</code></li>
-                <li>JS: <code>detector.js</code></li>
-                <li>JS: <code>modals.js</code></li>
-                <li>JS: <code>progress.js</code></li>
-                <li> <code>.gitignore</code></li>
-                <li>Add polyfill link for <code>progressbar.js </code>in Dashboard alt and Progressbar component</li>
-              </ul>
-              <h6>Fix</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Page: <code>layouts/RTL.html</code></li>
-                <li>Page: <code>layouts/fluid.html</code></li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-2">2.4.1 - Sooty</h5>
-              <p class="mb-0">28 March, 2020</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Navbar top right icons</li>
-                <li>Page: <code>dashboard.html</code></li>
-                <li>Scss: <code>_navbar-top.scss</code></li>
-                <li>Scss: <code>_animations.scss</code></li>
-              </ul>
-              <h6>Fix</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Navbar top settings icon animation</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-2">2.4.0 - Chipping</h5>
-              <p class="mb-0">24 March, 2020</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Page: <code>widgets.html</code></li>
-                <li>Component: <code>Navbar Top</code></li>
-                <li>Component: <code>Sidepanel</code></li>
-                <li>Dropdown On Hover</li>
-                <li>Js: <code>dropdown-on-hover.js</code></li>
-                <li>Js: <code>modal.js</code></li>
-                <li>Scss: <code>_animations.scss</code></li>
-                <li>Scss: <code>_modal.scss</code></li>
-              </ul>
-              <h6>Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Js: <code>demo-mode.js</code></li>
-                <li>Authentication: <code>wizard.html</code></li>
-                <li>components: <code>dropdowns.html</code></li>
-                <li>Scss: <code>_variables.scss</code></li>
-                <li>Scss: <code>_buttons.scss</code></li>
-                <li>Scss: <code>_navbar-vertical.scss</code></li>
-                <li>Scss: <code>_navbar.scss</code></li>
-                <li>Scss: <code>_navbar-top.scss</code></li>
-                <li>Scss: <code>_plyr.scss</code></li>
-                <li>Scss: <code>_functions.scss</code></li>
-                <li>Scss: <code>_scrollbar.scss</code></li>
-                <li>Scss: <code>_buttons.scss</code></li>
-                <li>Scss: <code>_override.scss</code></li>
-                <li>Scss: <code>_form.scss</code></li>
-                <li>Scss: <code>_mixed.scss</code></li>
-                <li>Scss: <code>utilities/_background.scss</code></li>
-                <li>Scss: <code>utilities/_text.scss</code></li>
-                <li>Scss: <code>data-table.scss</code></li>
-                <li>Scss: <code>_search-box.scss</code></li>
-                <li>Js: <code>leaflet.js</code></li>
-                <li>Js: <code>demo-mode.js</code></li>
-                <li>Js: <code>detector.js</code></li>
-              </ul>
-              <h6>Fix</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Search box text alignment in Safari</li>
-                <li>Fix HP logo in Safari in <code>profile.html</code></li>
-                <li>Remove <code>SCSS </code>deprecation warning from console.</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-2">2.3.2 - Nankeen Kestrel</h5>
-              <p class="mb-0">9 February, 2020</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Js: <code>navbar.js</code></li>
-                <li>Plugins: <code>leaflet.html</code></li>
-              </ul>
-              <h6>Fix</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Navbar Vertical collapse issue on hover</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-2">2.3.1 - Common Kestrel</h5>
-              <p class="mb-0">3 February, 2020</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Js: <code>dropdown-menu.js</code></li>
-                <li>Js: gulpfile.js</li>
-                <li>Js: leaflet.js</li>
-                <li>Leaflet map markers</li>
-              </ul>
-              <h6>Fix</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Dropdown menu in <code>table-responsive</code></li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-2">2.3.0 - Lesser Kestrel</h5>
-              <p class="mb-0">26 January, 2020</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Js: <code>config.navbar-vertical.js</code></li>
-                <li>Navbar vertical collapsed </li>
-                <li>Component: <code>navbar-vertical.html</code></li>
-              </ul>
-              <h6>Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Js: <code>navbar.js</code></li>
-                <li>Js: Rename <code>config.js </code>to <code>config.dark-mode.js</code></li>
-                <li>Scss: <code>_navbar-vertical.scss</code></li>
-                <li>Scss: <code>_buttons.scss</code></li>
-                <li>Scss: <code>_override.scss</code></li>
-                <li>Scss:<code>_navbar.scss</code></li>
-                <li> <code>gulpfile.js</code></li>
-                <li>Navbar toggler in responsive</li>
-              </ul>
-              <h6>Fix</h6>
-              <ul class="pl-0 bullet-inside">
-                <li> <code>leaflet.js </code>world map <code>min-height </code>in responsive</li>
-                <li>Text color of <code>btn-light </code>disabled button in dark mode</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-2">2.2.0 - Laggar</h5>
-              <p class="mb-0">05 January, 2020</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Js: <code>leaflet.js </code>JavaScript Plugin</li>
-                <li>Js: <code>leaflet-markercluster.js </code>Javascript Plugin</li>
-                <li>Js: <code>leaflet.tilelayer.colorfilter.js </code>Javascript Plugin</li>
-              </ul>
-              <h6>Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Js: <code>config.js</code></li>
-                <li>Js: <code>demo-mode.js</code></li>
-                <li>Replace <code>Echart World Map </code>with <code>Leaflet </code>in <code>Dashboard</code></li>
-                <li>Built <code>echarts.min.js </code>from <code>Echarts Online Builder</code></li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-2">2.1.0 - Barbary</h5>
-              <p class="mb-0">10 December, 2019</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Page: Wizard in authentication</li>
-                <li>Plugin: <code>Twitter Bootstrap Wizard </code>jQuery plugin</li>
-                <li>Plugin: <code>Jquery Validation </code>jQuery Plugin</li>
-                <li>Plugin: <code>Dropzone </code>JavaScript Plugin</li>
-                <li>Plugin: <code>Lottie </code>JavaScript Plugin</li>
-                <li>Js: Added <code>select2.js</code></li>
-              </ul>
-              <h6>Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Bootstrap <code>v4.4.1</code></li>
-                <li>Bootstrap spinner animation</li>
-                <li>disabled <code>:hover </code>state of button in Dark Mode</li>
-                <li> <code>Event Create </code>page with <code>Dropzone</code></li>
-                <li>Scss: <code>_borders.scss</code></li>
-                <li>Js: <code>flatpickr.js</code></li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-3">2.0.0 - Black</h5>
-              <p class="mb-0">07 November, 2019</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Dark Theme</li>
-                <li>Plugin: Added <code>Perfect Scrollbar </code>javaScript plugin </li>
-                <li>Css: <code>theme-dark.css</code></li>
-                <li>Css: <code>theme-dark-rtl.css</code></li>
-                <li>Sss: <code>dark.css </code>in <code>assets/lib/flatpicker</code></li>
-                <li>Scss: <code>theme-dark.scss</code></li>
-                <li>Scss: <code>dark/_variables.scss</code></li>
-                <li>Scss: <code>dark/_override.scss</code></li>
-                <li>Scss: Add <code>scss </code>directory in <code>pages/assets/select2</code></li>
-                <li>Js: <code>config.js</code></li>
-                <li>Js: <code>demo-mode.js</code></li>
-                <li>Plugin: <code>Perfect Scrollbar </code>for <code>IE</code>and <code>Edge</code></li>
-              </ul>
-              <h6>Fix</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Fix dashboard table dropdown in IPad</li>
-              </ul>
-              <h6>Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Scss: <code>plugins/_emojionearea.scss</code></li>
-                <li>Scss: <code>plugins/_flatpicker.scss</code></li>
-                <li>Scss: <code>plugins/_toastr.scss</code></li>
-                <li>Scss: <code>plugins/_select2.scss</code></li>
-                <li>Scss: <code>plugins/_tinymce.scss</code></li>
-                <li>Js: <code>Utils.js</code></li>
-                <li>Js: <code>detector.js</code></li>
-                <li>Js: <code>chart.js</code></li>
-                <li>Js: <code>chat.js</code></li>
-                <li>Js: <code>dropdown-menu.js</code></li>
-                <li>Update Smooth Scroollbar with default scrollbar in <code>chat.js</code></li>
-                <li>Update default scrollbar with css styled scrollbar in Navbar Vertical</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-0">1.9.0 - Bat</h5>
-              <p class="mb-0">16 October, 2019</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Page: Dashboard Alt</li>
-                <li>Component: Accordion</li>
-                <li>Plugin: Added <code>Echarts.js </code> javaScript plugin</li>
-                <li>Plugin: Added <code>Lodash </code> javaScript plugin</li>
-                <li>Scss: Added <code>_table.scss</code></li>
-                <li>Scss: Added <code>_echarts.scss</code></li>
-                <li>Scss: Added <code>_dashboard_alt.scss</code></li>
-                <li>Added background soft color varient</li>
-              </ul>
-              <h6>Fix</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Fix product slide on Ecommerce</li>
-              </ul>
-              <h6>Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Scss: Update <code>_data-table.scss</code></li>
-                <li>Scss: Update <code>_navbar-top.scss</code></li>
-                <li>Scss: Update <code>_variables.scss</code></li>
-                <li>Scss: Update <code>_toastr.scss</code></li>
-                <li>Scss: Remove <code>_overflow.scss</code></li>
-                <li>Js: Update <code>data-table  </code>in <code>theme.js</code></li>
-                <li>Js: Update <code>chart </code>in <code>theme.js</code></li>
-                <li>Js: Update <code>Utils </code>in <code>theme.js</code></li>
-                <li>Add autoprefixer configuration in <code>package.json </code></li>
-                <li>Update autoprefixer configuration in <code>gulpfile.js </code></li>
-                <li>Component: Update Dropdown page</li>
-                <li>Plugin: Update Data Table Page</li>
-                <li>Replace Semantic Accordion with Bootstrap Accordion in <code>pricing.html</code></li>
-                <li>Remove <code>Flexslider </code>jQuery plugin</li>
-                <li>Remove <code>Remodal </code>jQuery plugin</li>
-                <li>Remove <code>Semantic Accordion </code>jquery plugin </li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-0">1.8.2 - Brown</h5>
-              <p class="mb-0">19 September, 2019</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>Fix</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Fix table dashboard dropdown menu in iPad and iPhone</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-0">1.8.1 - Taita</h5>
-              <p class="mb-0">21 August, 2019</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Update basic authentication pages</li>
-                <li>Update Lock Screen page of basic layout</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-0">1.8.0 - Amur</h5>
-              <p class="mb-0">1 August, 2019</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Added cover layout of all authentication pages</li>
-                <li>Added card layout of all authentication pages</li>
-                <li>Modal layout example of authentication page</li>
-              </ul>
-              <h6 class="mt-3">Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Update dashboard table with Data Table plugin</li>
-                <li>Update Customers and Orders page in e-commerce</li>
-                <li>Add collapse in Intro section of Profile page</li>
-                <li>Update Associations page</li>
-                <li>Update Inbox page in Email</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-0">1.7.0 - Eleonora's</h5>
-              <p class="mb-0">2 July, 2019</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>Fix</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Dashboard table dropdown issue in Firefox</li>
-              </ul>
-              <h6>New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Page: Chat</li>
-                <li>Plugin: Added <code>Emojionearea  </code> jQuery Emoji Picker plugin</li>
-                <li>Plugin: <code>Smooth Scrollbar </code> JavaScript plugin</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-0">1.6.0 - Merlin</h5>
-              <p class="mb-0">18 May, 2019</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Page: Product List</li>
-                <li>Page: Product Grid</li>
-                <li>Page: Product Details</li>
-                <li>Page: Orders</li>
-                <li>Page: Order Details</li>
-                <li>Page: Customers</li>
-                <li>Page: Shopping Cart</li>
-                <li>Page: Checkout</li>
-                <li>Plugin: Added <code>Raty  </code> jQuery Star rating plugin</li>
-              </ul>
-              <h6 class="mt-3">Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Update Billing page </li>
-                <li>Rename <strong>Checkout </strong>page to <strong>Billing </strong></li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-0">1.5.1 - Peregrine</h5>
-              <p class="mb-0">10 April, 2019</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Component: Spinner page</li>
-                <li>Utilities: Clearfix, Close Icon, Display, Embed, Figures, Flex, Stretched link, Vertical align and Visibility</li>
-                <li>Plugin: <code>is.js</code></li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-0">1.5.0 - Prairie</h5>
-              <p class="mb-0">01 April, 2019</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Page: Inbox</li>
-                <li>Page: Details</li>
-                <li>Page: Compose</li>
-                <li>Added bulk select</li>
-                <li>Added <code>Tinymce </code>editor</li>
-              </ul>
-              <h6 class="mt-3">Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Dropdown toggle icon in vertical navbar</li>
-                <li>Vertical Navbar breakpoint</li>
-                <li>Plugin page in documentation</li>
-                <li>Removed <code>Feather Icon</code></li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-0">1.4.0 - Saker</h5>
-              <p class="mb-0">01 March, 2019</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Accordion like behaviour in Sidebar</li>
-                <li> Added <code>README.md</code></li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-0">1.3.1 - Lanner</h5>
-              <p class="mb-0">19 February, 2019</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>Fix</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Top navbar flickering on safari</li>
-                <li>Feed icons' thickness</li>
-                <li>Fancytab content overflow</li>
-                <li>Minor bugs</li>
-              </ul>
-              <h6>New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Spacing, Sizing, and Borders pages under Components</li>
-              </ul>
-              <h6 class="mt-3">Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Bootstrap version <code>v4.2.1</code> to <code>v4.3.1</code></li>
-                <li>Included a README file in the root folder with instructions on how to find the documentation.</li>
-                <li>Documentation for <code>utilities</code> and <code>grid</code></li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-0">1.3.0 - Aplomado</h5>
-              <p class="mb-0">9 February, 2019</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>Fix</h6>
-              <ul class="pl-0 bullet-inside">
-                <li> <code>W3C</code> Markup Validation</li>
-                <li>Removed smart checkbox plugin</li>
-                <li>Removed autocomplete plugin</li>
-                <li>Data table layout for every screen size</li>
-                <li>RTL page link</li>
-                <li>Landing page layout</li>
-                <li>Top navbar (landing page) scroll issue in smaller device</li>
-                <li>Megamenu and dropdown in standard navbar responsiveness</li>
-                <li>Testimonial nav in landing page for mobile devices</li>
-                <li>The position of <code>tooltip</code> and <code>popover</code> in mobile devices</li>
-                <li>Breakdown <code>SCSS</code> and <code>JS</code> files.</li>
-                <li>Commented documentation in <code>gulpfile.js</code></li>
-                <li>Top navbar sticky issue in IE</li>
-                <li>Other minor bugs</li>
-              </ul>
-              <h6 class="mt-3">New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Component: Falcon button set</li>
-                <li>Real-time <code>BarChart</code> in the dashboard</li>
-                <li>Plugin: <code>jqvmap</code></li>
-                <li>Page: Customer details</li>
-              </ul>
-              <h6 class="mt-3">Update</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Dependencies</li>
-                <li>Documentation</li>
-                <li>Added more widgets in the dashboard</li>
-                <li>Bootstrap button <code>:hover</code> and <code>:active</code> effect</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-0">1.2.0 - Kestrels</h5>
-              <p class="mb-0">17 January, 2019</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>Fix</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Zinput line height</li>
-                <li>Vertical navbar caret</li>
-                <li>Removed unused plugins</li>
-                <li>And some other minor bugs</li>
-              </ul>
-              <h6 class="mt-3">New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Page: Landing</li>
-                <li>Page: Feed</li>
-                <li>Page: Event details</li>
-                <li>Page: Create event</li>
-                <li>Page: FAQ</li>
-                <li>Page: Invoice</li>
-                <li>Page: Invite people</li>
-                <li>Page: Pricing alt</li>
-                <li>Page: Settings</li>
-                <li>Plugin: <code>Select2</code></li>
-                <li>Plugin: <code>Datepicker</code></li>
-              </ul>
-            </div>
-          </div>
-          <div class="card mb-3">
-            <div class="card-header">
-              <h5 class="mb-0">1.1.0 - Gyrfalcon</h5>
-              <p class="mb-0">26 December, 2018</p>
-            </div>
-            <div class="card-body bg-light">
-              <h6>Fix</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>Bug fixed</li>
-              </ul>
-              <h6 class="mt-3">New</h6>
-              <ul class="pl-0 bullet-inside">
-                <li>10 new HTML pages added</li>
-                <li>Grid system example added in component page</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header">
-              <h5 class="mb-0">1.0.0 - initial release</h5>
-            </div>
-            <div class="card-body bg-light">
-              <p class="mb-0">Nothing to see here!</p>
+            <div class="col-lg-8 pl-lg-2">
+              <div class="card h-100 mt-3 mt-lg-0">
+                <div class="card-header bg-light d-flex flex-between-center">
+                  <h5 class="mb-0">Active users</h5>
+                  <div class="dropdown text-sans-serif btn-reveal-trigger">
+                    <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button" data-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                    <div class="dropdown-menu dropdown-menu-right border py-0">
+                      <div class="bg-white py-2"><a class="dropdown-item" href="#!">Edit</a><a class="dropdown-item" href="#!">Move</a><a class="dropdown-item" href="#!">Resize</a>
+                        <div class="dropdown-divider"></div><a class="dropdown-item text-warning" href="#!">Archive</a><a class="dropdown-item text-danger" href="#!">Delete</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body h-100 p-0">
+                  <div class="h-100 bg-white" id="map" style="min-height: 300px;"></div>
+                </div>
+                <div class="card-footer bg-light">
+                  <div class="row justify-content-between">
+                    <div class="col-auto">
+                      <select class="custom-select custom-select-sm">
+                        <option value="week" selected="selected">Last 7 days</option>
+                        <option value="month">Last month</option>
+                        <option value="year">Last year</option>
+                      </select>
+                    </div>
+                    <div class="col-auto"><a class="btn btn-falcon-default btn-sm" href="#!"><span class="d-none d-sm-inline-block mr-1">Location</span>overview<span class="fa fa-chevron-right ml-1 fs--1"></span></a></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <footer>
@@ -1781,7 +1355,14 @@
     <script src="assets/lib/lodash/lodash.min.js"></script>
     <script src="assets/lib/perfect-scrollbar/perfect-scrollbar.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700%7cPoppins:100,200,300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
-    <script src="assets/lib/prismjs/prism.js"></script>
+    <script src="assets/lib/chart.js/Chart.min.js"></script>
+    <script src="assets/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="assets/lib/datatables-bs4/dataTables.bootstrap4.min.js"></script>
+    <script src="assets/lib/datatables.net-responsive/dataTables.responsive.js"></script>
+    <script src="assets/lib/datatables.net-responsive-bs4/responsive.bootstrap4.js"></script>
+    <script src="assets/lib/leaflet/leaflet.js"></script>
+    <script src="assets/lib/leaflet.markercluster/leaflet.markercluster.js"></script>
+    <script src="assets/lib/leaflet.tilelayer.colorfilter/leaflet-tilelayer-colorfilter.min.js"></script>
     <script src="assets/js/theme.js"></script>
 
   </body>
