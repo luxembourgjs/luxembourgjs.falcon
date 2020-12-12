@@ -25381,4 +25381,8 @@ div[data-collapse] + .kanban-item,
   transform: translateY(-24rem) !important;
 }
 
+.margin-top-3rem {
+  margin-top: 3rem !important;
+}
+
 /*# sourceMappingURL=theme.css.map */
