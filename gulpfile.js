@@ -723,3 +723,18 @@ gulp.task(
     gulp.parallel('watch', 'serve')
   )
 );
+
+/*-----------------------------------------------
+|   just build
+-----------------------------------------------*/
+gulp.task(
+  'build',
+  gulp.series(
+    'copy:dependency',
+    'scss',
+    'scss:dark',
+    'scss:rtl',
+    'scss:dark:rtl',
+    'js'
+  )
+);
