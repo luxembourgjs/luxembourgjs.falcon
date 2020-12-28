@@ -25369,5 +25369,20 @@ div[data-collapse] + .kanban-item,
 /*-----------------------------------------------
 |   User Styles
 -----------------------------------------------*/
+.img-landing-banner {
+  -webkit-transform: translateY(-20rem) !important;
+  -ms-transform: translateY(-20rem) !important;
+  transform: translateY(-20rem) !important;
+}
+
+.img-landing-banner:hover {
+  -webkit-transform: translateY(-24rem) !important;
+  -ms-transform: translateY(-24rem) !important;
+  transform: translateY(-24rem) !important;
+}
+
+.margin-top-3rem {
+  margin-top: 3rem !important;
+}
 
 /*# sourceMappingURL=theme-rtl.css.map */
