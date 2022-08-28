@@ -1,6 +1,6 @@
-#### Thank you for using Falcon.
+## Falcon, a theme by ThemeWagon team.
 
-For getting started, visit: https://prium.github.io/falcon/v2.8.0/default/documentation/getting-started.html
-- https://themes.getbootstrap.com/product/falcon-admin-dashboard-webapp-template/
+---
 
-Happy editing!
+Get the figma design file here:
+[https://www.figma.com/file/sBAjIWQIpl7FkHyV1ZDWC4/Falcon-Distributed-(v3.5.0)](<https://www.figma.com/file/sBAjIWQIpl7FkHyV1ZDWC4/Falcon-Distributed-(v3.5.0)>)
